@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MyApiTest - Leonardo Folle S. Dias</string>
+    <string name="send_sms">Enviar SMS</string>
+    <string name="hint_cellphone">+55 11 912345678</string>
+    <string name="code_brazil">+55</string>
+    <string name="hint_verify_sms">101010</string>
+    <string name="verify_sms">Verificar SMS</string>
+    <string name="logout">Logout</string>
+    <string name="car_license">%1ano</string>
+    <string name="success_delete">Item deletado com sucesso</string>
+    <string name="error_delete">Erro ao deletar o item</string>
+    <string name="Placa_Veiculo">Placa (AAA-0000)</string>
+    <string name="error_validate_form">Por favor, preencha o campo: %1$s</string>
+    <string name="success_create">Item %1$s criado com sucesso!</string>
+    <string name="error_create">Erro ao criar o item</string>
+    <string name="success_update">Item atualizado com sucesso</string>
+    <string name="unknown_error">Erro desconhecido, tente novamente!</string>
+</resources>
