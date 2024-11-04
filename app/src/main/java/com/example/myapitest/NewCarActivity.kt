@@ -2,6 +2,7 @@ package com.example.myapitest
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,11 +11,15 @@ import com.example.myapitest.model.CarValue
 import com.example.myapitest.service.Result
 import com.example.myapitest.service.RetrofitCar
 import com.example.myapitest.service.safeApiCall
+import com.google.firebase.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.security.SecureRandom
+import java.util.UUID
 
 class NewCarActivity : AppCompatActivity() {
 
@@ -39,13 +44,40 @@ class NewCarActivity : AppCompatActivity() {
         }
     }
 
+    private fun uploadImageToFirebase(bitmap: Bitmap){
+        // Inicializar o Firabase Storage
+        val storageRef = FirebaseStorage.getInstance().reference
+
+        // criar uma referencia para o arquivo no firebase
+        val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
+
+        // converter o Bitmap para o ByteArrayOutPutStream
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+
+        val data = baos.toByteArray()
+
+        val uploadTask = imagesRef.putBytes(data)
+        uploadTask.addOnFailureListener {
+            Toast.makeText(
+                this,
+                "Falha ao realizar o upload",
+                Toast.LENGTH_SHORT
+            ).show()
+        }.addOnSuccessListener {
+            imagesRef.downloadUrl.addOnSuccessListener { uri ->
+                binding.imageUrl.setText(uri.toString())
+            }
+        }
+    }
+
     private fun save() {
         if (!validateForm()) return
         CoroutineScope(Dispatchers.IO).launch {
             val id = SecureRandom().nextInt().toString()
             val carValue = CarValue(
                 id,
-                binding.model.text.toString(),
+                binding.name.text.toString(),
                 binding.year.text.toString(),
                 binding.license.text.toString(),
                 binding.imageUrl.text.toString()
@@ -76,7 +108,7 @@ class NewCarActivity : AppCompatActivity() {
 
 
     private fun validateForm(): Boolean {
-        if (binding.model.text.toString().isBlank()) {
+        if (binding.name.text.toString().isBlank()) {
             Toast.makeText(
                 this,
                 getString(R.string.error_validate_form, "Modelo"),

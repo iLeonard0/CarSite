@@ -126,7 +126,7 @@ class CarDetailActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess() {
-        binding.model.text = car.value.model
+        binding.name.text = car.value.name
         binding.year.text = car.value.year
         binding.license.setText(car.value.licence)
         binding.image.loadUrl(car.value.imageUrl)

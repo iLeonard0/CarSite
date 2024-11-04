@@ -8,10 +8,9 @@ data class Car(
 
 data class CarValue(
     val id: String,
-    val model: String,
-    val year: String,
-    val licence: String,
     val imageUrl: String,
-
-    )
+    val year: String,
+    val name: String,
+    val licence: String
+)
 

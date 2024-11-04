@@ -12,14 +12,14 @@ import com.example.myapitest.ui.CircleTransform
 import com.example.myapitest.ui.loadUrl
 import com.squareup.picasso.Picasso
 
-class CarAdapter (
+class CarAdapter(
     private val car: List<Car>,
-    private val carClickListener:(Car) -> Unit,
+    private val carClickListener: (Car) -> Unit,
 ) : RecyclerView.Adapter<CarAdapter.CarHolder>() {
 
-    class CarHolder(view: View):RecyclerView.ViewHolder(view){
+    class CarHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.image)
-        val tvModelCar: TextView = view.findViewById(R.id.model)
+        val tvNameCar: TextView = view.findViewById(R.id.name)
         val tvYearCar: TextView = view.findViewById(R.id.year)
         val tvLicenseCar: TextView = view.findViewById(R.id.license)
     }
@@ -38,7 +38,7 @@ class CarAdapter (
             carClickListener.invoke(car)
         }
 
-        holder.tvModelCar.text = car.value.model
+        holder.tvNameCar.text = car.value.name
 
         holder.tvYearCar.text = car.value.year
 
@@ -52,8 +52,5 @@ class CarAdapter (
             .into(holder.imageView)
         holder.imageView.loadUrl(car.value.imageUrl)
     }
-
-
-
 
 }

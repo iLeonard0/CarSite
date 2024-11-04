@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapitest.adapter.CarAdapter
@@ -86,15 +87,15 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun fetchItems() {
-        // Alterando execução para IO thread
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall { RetrofitCar.apiService.getCars() }
 
-            // Alterando execução para Main thread
             withContext(Dispatchers.Main) {
                 binding.swipeRefreshLayout.isRefreshing = false
                 when (result) {
-                    is Result.Error -> {}
+                    is Result.Error -> {
+                        Toast.makeText(this@MainActivity, R.string.error_fetching_data, Toast.LENGTH_SHORT).show()
+                    }
                     is Result.Success -> handleOnSuccess(result.data)
                 }
             }

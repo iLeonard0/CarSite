@@ -1,12 +1,15 @@
 <resources>
     <string name="app_name">MyApiTest - Leonardo Folle S. Dias</string>
     <string name="send_sms">Enviar SMS</string>
+    <string name="car_name">Nome: %1$s</string>
+    <string name="car_year">Ano: %1$d</string>
+    <string name="error_fetching_data">Erro ao carregar os dados. Tente novamente.</string>
     <string name="hint_cellphone">+55 11 912345678</string>
     <string name="code_brazil">+55</string>
     <string name="hint_verify_sms">101010</string>
     <string name="verify_sms">Verificar SMS</string>
     <string name="logout">Logout</string>
-    <string name="car_license">%1ano</string>
+    <string name="car_license">Placa: %1$s</string>
     <string name="success_delete">Item deletado com sucesso</string>
     <string name="error_delete">Erro ao deletar o item</string>
     <string name="Placa_Veiculo">Placa (AAA-0000)</string>
