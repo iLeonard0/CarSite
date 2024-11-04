@@ -3,6 +3,7 @@ package com.example.myapitest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -41,9 +42,10 @@ class CarDetailActivity : AppCompatActivity() {
             finish()
         }
         binding.deleteCTA.setOnClickListener {
+
             deleteCar()
         }
-        binding.deleteCTA.setOnClickListener {
+        binding.editCTA.setOnClickListener {
             editCar()
         }
     }
@@ -80,17 +82,20 @@ class CarDetailActivity : AppCompatActivity() {
 
 
     private fun loadCar() {
-        var carId = intent.getStringExtra(ARG_ID) ?: ""
+        val carId = intent.getStringExtra(ARG_ID) ?: ""
+        Log.d("CarDetailActivity", "Car ID: $carId") // Log para verificar o ID
 
         CoroutineScope(Dispatchers.IO).launch {
-
-            val result = safeApiCall { RetrofitCar.apiService.getCarsId(carId) }
+            val result = safeApiCall { RetrofitCar.apiService.getCarsId(carId).value }
 
             withContext(Dispatchers.Main) {
                 when (result) {
-                    is Result.Error -> {}
+                    is Result.Error -> {
+                        Log.e("CarDetailActivity", "Error fetching car details: ${result.message}")
+                    }
                     is Result.Success -> {
                         car = result.data
+                        Log.d("CarDetailActivity", "Fetched car: $car") // Log para verificar o carro
                         handleSuccess()
                     }
                 }
@@ -99,6 +104,8 @@ class CarDetailActivity : AppCompatActivity() {
     }
 
     private fun deleteCar() {
+        println("oi");
+
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall { RetrofitCar.apiService.deleteCar(car.id) }
 
@@ -129,7 +136,13 @@ class CarDetailActivity : AppCompatActivity() {
         binding.name.text = car.name
         binding.year.text = car.year
         binding.license.setText(car.licence)
-        binding.image.loadUrl(car.imageUrl)
+
+        if (car.imageUrl.isNotEmpty()) {
+            binding.image.loadUrl(car.imageUrl)
+        } else {
+            // Defina uma imagem padrão ou trate o caso em que a URL é vazia
+            binding.image.setImageResource(R.drawable.ic_error) // Imagem padrão
+        }
     }
 
 

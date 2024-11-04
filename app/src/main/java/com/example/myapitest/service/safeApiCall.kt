@@ -15,7 +15,6 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
 
         Result.Success(apiCall())
     } catch (e: Exception) {
-        Log.e("API Error", "Error fetching data: ${e.message}", e)
 
         when (e) {
             is HttpException -> {
