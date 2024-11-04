@@ -1,5 +1,6 @@
 package com.example.myapitest.service
 
+import android.util.Log
 import retrofit2.HttpException
 
 sealed class Result<out T> {
@@ -14,9 +15,11 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
 
         Result.Success(apiCall())
     } catch (e: Exception) {
+        Log.e("API Error", "Error fetching data: ${e.message}", e)
 
         when (e) {
             is HttpException -> {
+
                 Result.Error(e.code(), e.message())
             }
             else -> {

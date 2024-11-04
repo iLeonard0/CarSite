@@ -3,6 +3,7 @@ package com.example.myapitest
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -90,10 +91,14 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall { RetrofitCar.apiService.getCars() }
 
+            Log.d("API Response", result.toString())
+
+
             withContext(Dispatchers.Main) {
                 binding.swipeRefreshLayout.isRefreshing = false
                 when (result) {
                     is Result.Error -> {
+                        Log.e("API Error", "Error fetching data: ${result.message}")
                         Toast.makeText(this@MainActivity, R.string.error_fetching_data, Toast.LENGTH_SHORT).show()
                     }
                     is Result.Success -> handleOnSuccess(result.data)
@@ -103,6 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleOnSuccess(data: List<Car>) {
+        Log.d("Data List", data.toString())
         val adapter = CarAdapter(data) {
             // listener do item clicado
             startActivity(

@@ -53,7 +53,7 @@ class CarDetailActivity : AppCompatActivity() {
             val result = safeApiCall {
                 RetrofitCar.apiService.updateCar(
                     car.id,
-                    car.value.copy(binding.license.text.toString())
+                    car.copy(binding.license.text.toString())
                 )
             }
             withContext(Dispatchers.Main) {
@@ -126,10 +126,10 @@ class CarDetailActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess() {
-        binding.name.text = car.value.name
-        binding.year.text = car.value.year
-        binding.license.setText(car.value.licence)
-        binding.image.loadUrl(car.value.imageUrl)
+        binding.name.text = car.name
+        binding.year.text = car.year
+        binding.license.setText(car.licence)
+        binding.image.loadUrl(car.imageUrl)
     }
 
 

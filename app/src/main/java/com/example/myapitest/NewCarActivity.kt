@@ -7,11 +7,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapitest.databinding.ActivityNewCarBinding
-import com.example.myapitest.model.CarValue
+import com.example.myapitest.model.Car
 import com.example.myapitest.service.Result
 import com.example.myapitest.service.RetrofitCar
 import com.example.myapitest.service.safeApiCall
-import com.google.firebase.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -75,7 +74,7 @@ class NewCarActivity : AppCompatActivity() {
         if (!validateForm()) return
         CoroutineScope(Dispatchers.IO).launch {
             val id = SecureRandom().nextInt().toString()
-            val carValue = CarValue(
+            val carValue = Car(
                 id,
                 binding.name.text.toString(),
                 binding.year.text.toString(),
@@ -111,7 +110,7 @@ class NewCarActivity : AppCompatActivity() {
         if (binding.name.text.toString().isBlank()) {
             Toast.makeText(
                 this,
-                getString(R.string.error_validate_form, "Modelo"),
+                getString(R.string.error_validate_form, "Nome"),
                 Toast.LENGTH_SHORT
             ).show()
             return false
