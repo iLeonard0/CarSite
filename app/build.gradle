@@ -109,4 +109,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth' // Certifique-se de usar a versão mais recente
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
 
+    // Firebase Storage
+    implementation 'com.google.firebase:firebase-storage-ktx:21.0.1'
+
 }

@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         binding.addCta.setOnClickListener {
             startActivity(NewCarActivity.newIntent(this))
         }
+
     }
 
 
@@ -101,6 +102,7 @@ class MainActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
                     is Result.Success -> handleOnSuccess(result.data)
                 }
             }
