@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapitest.databinding.ActivityNewCarBinding
 import com.example.myapitest.model.Car
+import com.example.myapitest.model.Place
 import com.example.myapitest.service.Result
 import com.example.myapitest.service.RetrofitCar
 import com.example.myapitest.service.safeApiCall
@@ -43,7 +44,7 @@ class NewCarActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImageToFirebase(bitmap: Bitmap){
+    /* private fun uploadImageToFirebase(bitmap: Bitmap) {
         // Inicializar o Firabase Storage
         val storageRef = FirebaseStorage.getInstance().reference
 
@@ -68,7 +69,7 @@ class NewCarActivity : AppCompatActivity() {
                 binding.imageUrl.setText(uri.toString())
             }
         }
-    }
+    }*/
 
     private fun save() {
         if (!validateForm()) return
@@ -79,7 +80,8 @@ class NewCarActivity : AppCompatActivity() {
                 binding.name.text.toString(),
                 binding.year.text.toString(),
                 binding.license.text.toString(),
-                binding.imageUrl.text.toString()
+                binding.imageUrl.text.toString(),
+                Place(0.0, .0)
             )
             val result = safeApiCall { RetrofitCar.apiService.addCar(carValue) }
             withContext(Dispatchers.Main) {

@@ -50,16 +50,15 @@ class CarDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun editCar(){
+    private fun editCar() {
         CoroutineScope(Dispatchers.IO).launch {
+            val updatedCar =
+                car.copy(licence = binding.license.text.toString()) // Atualize o carro com o novo dado
             val result = safeApiCall {
-                RetrofitCar.apiService.updateCar(
-                    car.id,
-                    car.copy(binding.license.text.toString())
-                )
+                RetrofitCar.apiService.updateCar(car.id, updatedCar)
             }
             withContext(Dispatchers.Main) {
-                when (result){
+                when (result) {
                     is Result.Error -> {
                         Toast.makeText(
                             this@CarDetailActivity,
@@ -67,13 +66,18 @@ class CarDetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
                     is Result.Success -> {
                         Toast.makeText(
                             this@CarDetailActivity,
                             R.string.success_update,
                             Toast.LENGTH_SHORT
                         ).show()
-                        finish()
+                        // AQUI: NOTIFICAR A MAIN ACTIVITY PARA ATUALIZAR A LISTA
+                        val intent = Intent(this@CarDetailActivity, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP // Limpa a pilha de atividades
+                        startActivity(intent)
+                        finish() // Finaliza a activity atual
                     }
                 }
             }
@@ -93,9 +97,13 @@ class CarDetailActivity : AppCompatActivity() {
                     is Result.Error -> {
                         Log.e("CarDetailActivity", "Error fetching car details: ${result.message}")
                     }
+
                     is Result.Success -> {
                         car = result.data
-                        Log.d("CarDetailActivity", "Fetched car: $car") // Log para verificar o carro
+                        Log.d(
+                            "CarDetailActivity",
+                            "Fetched car: $car"
+                        ) // Log para verificar o carro
                         handleSuccess()
                     }
                 }
@@ -140,8 +148,7 @@ class CarDetailActivity : AppCompatActivity() {
         if (car.imageUrl.isNotEmpty()) {
             binding.image.loadUrl(car.imageUrl)
         } else {
-            // Defina uma imagem padrão ou trate o caso em que a URL é vazia
-            binding.image.setImageResource(R.drawable.ic_error) // Imagem padrão
+            binding.image.setImageResource(R.drawable.ic_error)
         }
     }
 

@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         fetchItems()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean{
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 onLogout()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -86,7 +87,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun fetchItems() {
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall { RetrofitCar.apiService.getCars() }
@@ -95,7 +95,11 @@ class MainActivity : AppCompatActivity() {
                 binding.swipeRefreshLayout.isRefreshing = false
                 when (result) {
                     is Result.Error -> {
-                        Toast.makeText(this@MainActivity, R.string.error_fetching_data, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            R.string.error_fetching_data,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     is Result.Success -> handleOnSuccess(result.data)
                 }
@@ -106,14 +110,10 @@ class MainActivity : AppCompatActivity() {
     private fun handleOnSuccess(data: List<Car>) {
         val adapter = CarAdapter(data) {
             // listener do item clicado
-            startActivity(
-                CarDetailActivity.newIntent(
-                    this,
-                    it.id
-                )
-            )
+            startActivity(CarDetailActivity.newIntent(this, it.id))
         }
         binding.recyclerView.adapter = adapter
+        adapter.notifyDataSetChanged() // Certifique-se de chamar isso após atualizar a lista.
     }
 
     companion object {
