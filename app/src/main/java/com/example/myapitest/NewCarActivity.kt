@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Camera
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -32,10 +31,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.UUID
+import java.security.SecureRandom
 
 class NewCarActivity : AppCompatActivity() {
 
@@ -55,12 +54,11 @@ class NewCarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNewCarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Solicitar permissões em tempo de execução
+        requestPermissions()
+
         setupView()
-    }
-
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupView() {
@@ -70,11 +68,49 @@ class NewCarActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
+
         binding.saveCta.setOnClickListener {
             save()
         }
+
         binding.takePictureCta.setOnClickListener {
             takePicture()
+        }
+    }
+
+    private fun requestPermissions() {
+        val permissionsNeeded = mutableListOf<String>()
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsNeeded.add(android.Manifest.permission.CAMERA)
+        }
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsNeeded.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsNeeded.toTypedArray(),
+                CAMERA_REQUEST_CODE
+            )
         }
     }
 
@@ -85,9 +121,8 @@ class NewCarActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             openCamera()
-
         } else {
-            requestCameraPermission()
+            requestPermissions()  // Solicita permissões de câmera, caso necessário
         }
     }
 
@@ -101,46 +136,29 @@ class NewCarActivity : AppCompatActivity() {
     private fun createImageUri(): Uri {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "JPEG_${timeStamp}_"
-
-        // Obtém o diretório de armazenamento externo para imagens
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        imageFile = File.createTempFile(imageFileName, ".jpg", storageDir)
 
-        // Cria um arquivo de imagem
-        imageFile = File.createTempFile(
-            imageFileName,  /* prefix */
-            ".jpg",         /* suffix */
-            storageDir      /* directory */
-        )
-        // Retorna o URI para o arquivo
         return FileProvider.getUriForFile(
-            this,  // Contexto
-            "com.example.myapitest.fileprovider", // Autoridade
-            imageFile!! // O arquivo
+            this,
+            "com.example.myapitest.fileprovider",
+            imageFile!!
         )
     }
 
-    private fun requestCameraPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(android.Manifest.permission.CAMERA),
-            CAMERA_REQUEST_CODE
-        )
-    }
 
     private fun uploadImageToFirebase() {
-        // Inicializar o Firabase Storage
+        // Inicializar o Firebase Storage
         val storageRef = FirebaseStorage.getInstance().reference
 
-        // criar uma referencia para o arquivo no firebase
-        val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
-
-        // converter o Bitmap para o ByteArrayOutPutStream
+        // criar uma referência para o arquivo no Firebase
+        val imagesRef = storageRef.child("${UUID.randomUUID()}.jpg")
+        // converter o Bitmap para ByteArrayOutputStream
         val baos = ByteArrayOutputStream()
         val imageBitmap = BitmapFactory.decodeFile(imageFile!!.path)
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-
         val data = baos.toByteArray()
-
+        // Desabilita botões para evitar duplo click
         binding.loadImageProgress.visibility = View.VISIBLE
         binding.takePictureCta.isEnabled = false
         binding.saveCta.isEnabled = false
@@ -149,11 +167,7 @@ class NewCarActivity : AppCompatActivity() {
                 binding.loadImageProgress.visibility = View.GONE
                 binding.takePictureCta.isEnabled = true
                 binding.saveCta.isEnabled = true
-                Toast.makeText(
-                    this,
-                    "Falha ao realizar o upload",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Falha ao realizar o upload", Toast.LENGTH_SHORT).show()
             }
             .addOnSuccessListener {
                 binding.loadImageProgress.visibility = View.GONE
@@ -165,11 +179,10 @@ class NewCarActivity : AppCompatActivity() {
             }
     }
 
+
     private fun save() {
         if (!validateForm()) return
-
         uploadImageToFirebase()
-
     }
 
     private fun saveData(imageUrl: String) {
@@ -207,7 +220,6 @@ class NewCarActivity : AppCompatActivity() {
         }
     }
 
-
     private fun validateForm(): Boolean {
         if (binding.name.text.toString().isBlank()) {
             Toast.makeText(
@@ -218,16 +230,16 @@ class NewCarActivity : AppCompatActivity() {
             return false
         }
         if (binding.year.text.toString().isBlank()) {
-            Toast.makeText(this, getString(R.string.error_validate_form, "Ano"), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                this,
+                getString(R.string.error_validate_form, "Ano"),
+                Toast.LENGTH_SHORT
+            ).show()
             return false
         }
         if (binding.license.text.toString().isBlank()) {
-            Toast.makeText(
-                this,
-                getString(R.string.error_validate_form, "Placa"),
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(this, getString(R.string.error_validate_form, "Placa"), Toast.LENGTH_SHORT)
+                .show()
             return false
         }
         if (imageFile == null) {
@@ -238,17 +250,14 @@ class NewCarActivity : AppCompatActivity() {
             ).show()
             return false
         }
-
         return true
     }
 
-    companion object {
 
+    companion object {
         private const val CAMERA_REQUEST_CODE = 101
 
         fun newIntent(context: Context) =
             Intent(context, NewCarActivity::class.java)
-
     }
-
 }
