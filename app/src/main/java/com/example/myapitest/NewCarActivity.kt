@@ -152,7 +152,7 @@ class NewCarActivity : AppCompatActivity() {
         val storageRef = FirebaseStorage.getInstance().reference
 
         // criar uma referência para o arquivo no Firebase
-        val imagesRef = storageRef.child("${UUID.randomUUID()}.jpg")
+        val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
         // converter o Bitmap para ByteArrayOutputStream
         val baos = ByteArrayOutputStream()
         val imageBitmap = BitmapFactory.decodeFile(imageFile!!.path)
@@ -190,10 +190,10 @@ class NewCarActivity : AppCompatActivity() {
             val id = SecureRandom().nextInt().toString()
             val carValue = Car(
                 id,
-                binding.name.text.toString(),
-                binding.year.text.toString(),
-                binding.license.text.toString(),
                 imageUrl,
+                binding.year.text.toString(),
+                binding.name.text.toString(),
+                binding.license.text.toString(),
                 Place(0.0, .0)
             )
             val result = safeApiCall { RetrofitCar.apiService.addCar(carValue) }
