@@ -4,7 +4,7 @@
     <string name="car_name">Nome: %1$s</string>
     <string name="car_year">Ano: %1$d</string>
     <string name="error_fetching_data">Erro ao carregar os dados. Tente novamente.</string>
-    <string name="hint_cellphone">+55 11 912345678</string>
+    <string name="hint_cellphone">+5511912345678</string>
     <string name="code_brazil">+55</string>
     <string name="hint_verify_sms">101010</string>
     <string name="verify_sms">Verificar SMS</string>
