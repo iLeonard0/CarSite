@@ -112,8 +112,6 @@ class CarDetailActivity : AppCompatActivity() {
     }
 
     private fun deleteCar() {
-        println("oi");
-
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall { RetrofitCar.apiService.deleteCar(car.id) }
 

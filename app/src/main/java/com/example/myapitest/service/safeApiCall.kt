@@ -1,6 +1,5 @@
 package com.example.myapitest.service
 
-import android.util.Log
 import retrofit2.HttpException
 
 sealed class Result<out T> {

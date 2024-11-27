@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyApiTest - Leonardo Folle S. Dias</string>
+    <string name="app_name">UNICAR</string>
     <string name="send_sms">Enviar SMS</string>
     <string name="car_name">Nome: %1$s</string>
     <string name="car_year">Ano: %1$d</string>
