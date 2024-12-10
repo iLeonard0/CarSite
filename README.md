@@ -17,7 +17,7 @@ Implemente uma tela de login que use um dos provedores de autenticação do Fire
     - Configure o Firebase para aceitar o número de telefone: `+55 11 91234-5678`.
     - Defina o código de verificação para login de teste como `101010`.
 
-- **Autenticação com Google** (caso escolha esta opção):
+- **Autenticação com Google** :
     - Habilite a autenticação com Google nas configurações do Firebase Console.
     - Implemente a lógica de autenticação no aplicativo, usando o provedor de login do Google.
 
@@ -64,41 +64,4 @@ Para um desafio adicional, utilize a API do Google Maps para exibir o local (`pl
     - **Glide** ou outra biblioteca para carregamento de imagens
     - **Google Maps SDK** (caso implemente a parte opcional)
 
-### Entrega do Exercício
-
-Aqui está a seção detalhada sobre a entrega do projeto com as instruções para fazer um fork:
-
----
-
-### Entrega do Projeto
-
-Para enviar o projeto finalizado, siga os passos abaixo:
-
-1. **Faça um Fork do Projeto**:
-    - No GitHub, vá até a página do repositório original.
-    - Clique em "Fork" no canto superior direito da página para criar uma cópia do repositório em seu GitHub pessoal.
-
-2. **Clone o Repositório Forkado**:
-    - No seu perfil do GitHub, acesse o repositório forkado.
-    - Copie o link de clonagem (HTTPS ou SSH).
-    - No terminal, clone o repositório em sua máquina local:
-      ```bash
-      git clone <link-do-repositorio-forkado>
-      ```
-
-3. **Implemente as Funcionalidades**:
-    - Siga as instruções do exercício para implementar as funcionalidades.
-    - Após concluir, adicione, faça commit e push das alterações para o repositório forkado.
-
-4. **Publicação**:
-    - **Opção 1**: Envie o projeto final no seu repositório forkado. Compartilhe o link do repositório com o instrutor para avaliação.
-    - **Opção 2**: Faça um Pull Request para o repositório original. Para isso:
-        - Acesse o repositório original no GitHub.
-        - Clique em "Compare & pull request" para iniciar o processo de Pull Request.
-        - Descreva as alterações feitas e confirme o envio.
-
-> **Nota**: Certifique-se de que o código está organizado e que todas as funcionalidades foram devidamente testadas antes de enviar o projeto.
-
 --- 
-
-Boa entrega e sucesso no desenvolvimento!
