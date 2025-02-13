@@ -5,7 +5,7 @@ Este projeto envolve a criação de uma tela de login com o Firebase, integraç�
 ### Requisitos
 
 - **IDE**: Android Studio
-- **Bibliotecas**: Firebase Authentication, Firebase Storage, Retrofit (para requisições REST), Google Maps (opcional)
+- **Bibliotecas**: Firebase Authentication, Firebase Storage, Retrofit (para requisições REST).
 
 ## Instruções
 
@@ -48,20 +48,13 @@ Implemente a integração com uma API REST disponível no [Link] (https://github
     - Exiba a imagem e as informações de cada carro no aplicativo.
     - Utilize Retrofit para realizar as requisições à API.
 
-### 4. (Opcional) Exibir Localização no Google Maps
-
-Para um desafio adicional, utilize a API do Google Maps para exibir o local (`place`) associado ao carro. Essa localização é especificada pelos campos `lat` e `long` no JSON da API.
-
----
 
 ### Configuração do Projeto
 
 1. **Firebase**: Configure o projeto com Firebase Authentication e Firebase Storage. Adicione o `google-services.json` ao projeto para integração.
-2. **Google Maps** (opcional): Habilite a API do Google Maps e adicione uma chave de API ao projeto.
-3. **Dependências Gradle**:
+2. **Dependências Gradle**:
     - **Firebase**: `Firebase Authentication` e `Firebase Storage`
     - **Retrofit** para a comunicação com a API REST
     - **Glide** ou outra biblioteca para carregamento de imagens
-    - **Google Maps SDK** (caso implemente a parte opcional)
 
 --- 
